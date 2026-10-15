@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guía Unidad II · Gestión de la Producción II</title>
+<style>
+:root{--bg:#f3f5fa;--p:#fff;--tx:#1a2233;--d:#586377;--ac:#0e7490;--ok:#166534;--okb:#dcfce7;--no:#991b1b;--nob:#fee2e2;--bd:#c9d3e3;--in:#eef2f9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b0f19;--p:#131c2e;--tx:#e2e8f0;--d:#94a3b8;--ac:#22d3ee;--ok:#86efac;--okb:#064e3b;--no:#fca5a5;--nob:#7f1d1d;--bd:#26365a;--in:#0f172a}}
+:root[data-theme=dark]{--bg:#0b0f19;--p:#131c2e;--tx:#e2e8f0;--d:#94a3b8;--ac:#22d3ee;--ok:#86efac;--okb:#064e3b;--no:#fca5a5;--nob:#7f1d1d;--bd:#26365a;--in:#0f172a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.c{max-width:860px;margin:0 auto;padding:16px}
+header{background:var(--p);border:2px solid var(--ac);border-radius:12px;padding:16px;margin-bottom:12px}
+h1{font-size:1.3rem;margin:0 0 4px;color:var(--ac)}h2{font-size:1.1rem;color:var(--ac);margin:8px 0}
+h5{margin:0 0 6px;font-size:.85rem;color:var(--d)}
+.d{color:var(--d);margin:4px 0}
+.bar{height:10px;background:var(--in);border-radius:6px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .4s}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab{background:var(--p);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;cursor:pointer;font:inherit;font-size:.9rem}.tab.on{border-color:var(--ac);background:var(--in);font-weight:700}.tab small{display:inline;margin-left:4px}
+.ex{background:var(--p);border:1px solid var(--bd);border-radius:10px;padding:14px;margin:12px 0}
+details{background:var(--in);border-radius:8px;padding:8px 12px;margin:8px 0}
+.op{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--in);color:var(--tx);font:inherit;cursor:pointer}
+.op.ok,input.ok,select.ok{border-color:var(--ok);background:var(--okb)}.op.no,input.no,select.no{border-color:var(--no);background:var(--nob)}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--in);border:1px solid var(--bd);border-radius:6px;padding:6px 8px}
+input[type=number]{width:84px}textarea{width:100%}
+.r{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.sm{padding:7px 12px;border-radius:6px;border:1px solid var(--ac);background:transparent;color:var(--ac);font:inherit;cursor:pointer}
+.fb{margin-top:8px;font-weight:600}.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.w{overflow-x:auto}table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:6px 8px;text-align:left}
+.ck label{display:block;font-weight:400;margin:4px 0}
+small{color:var(--d);display:block}
+footer{color:var(--d);font-size:.85rem;margin:20px 0}
+</style></head><body><main class="c">
+<header><h1>Guía Unidad II · Gestión de la Producción II</h1>
+<p class="d">CAP, programación y prioridades. Resuelve primero con lápiz; el repaso es para cuando te atores.</p>
+<div class="bar"><i id="bi"></i></div><p id="xp" class="d"></p></header>
+<nav id="nv"></nav><section id="mn"></section>
+<footer>Cada ejercicio vale 10 XP la primera vez que lo aciertas. El 100 % es práctica, no garantía de acreditar: contrasta con tus notas y tu profesor. Tu avance se guarda en este navegador.</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),P=a=>a[R(0,a.length-1)],
+sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]),F=x=>String(Math.round(x*100)/100),
+E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+let S={x:0,d:{}},cur=0;try{S=JSON.parse(localStorage.getItem('g2u2'))||S}catch(e){}
+const sv=()=>{try{localStorage.setItem('g2u2',JSON.stringify(S))}catch(e){}};
+const D=(q,k)=>({t:'def',q,k}),N=g=>({t:'num',g}),pk=(q,o,e,a=0,f=0)=>({t:'pick',q,o,e,a,f}),
+LV=['Nivel 1','Nivel 2','Nivel 3','Nivel 4'],EQ=['Hacer','Delegar','Planificar','Eliminar'],pr=(a,b,c,d)=>a*b/(c*d)*100;
+const PP=(fp,tp,fr,tr)=>{const p=pr(fp,tp,fr,tr);return{a:p,tol:.5,u:'%',h:['Numerador = FL planeada × TC planeado.','Denominador = FL real × TC real. Divide y multiplica por 100.'],e:`(${fp}×${tp}) / (${fr}×${F(tr)}) = ${F(fp*tp)} / ${F(fr*tr)} = ${F(p)} %`}};
+const CP=[
+[['A','Diagnóstico',1,''],['B','Comprar repuestos',2,'A'],['C','Desmontar máquina',1,'A'],['D','Reparar máquina',2,'BC'],['E','Probar máquina',1,'D'],['F','Entregar máquina',1,'E']],
+[['A','Elegir local',3,''],['B','Firmar contrato',1,'A'],['C','Comprar mobiliario',4,'B'],['D','Instalar electricidad',3,'B'],['E','Instalar internet',1,'D'],['F','Colocar mobiliario',2,'C'],['G','Limpieza final',1,'EF']],
+[['A','Analizar necesidades',2,''],['B','Comprar equipos',3,'A'],['C','Configurar software',4,'A'],['D','Instalar equipos',2,'B'],['E','Capacitar empleados',2,'C'],['F','Pruebas del sistema',2,'DE'],['G','Puesta en marcha',1,'F']]];
+function cpm(a){const r={};a.forEach(([k,,d,p])=>{const es=Math.max(0,...[...p].map(q=>r[q].ef));r[k]={d,es,ef:es+d,p}});
+const T=Math.max(...Object.values(r).map(v=>v.ef)),ks=a.map(v=>v[0]).reverse();
+ks.forEach(k=>{const s=ks.filter(q=>r[q].p.includes(k));r[k].lf=s.length?Math.min(...s.map(q=>r[q].ls)):T;r[k].ls=r[k].lf-r[k].d;r[k].h=r[k].ls-r[k].es});return{r,T}}
+const EI=[['Una máquina principal se averió y la producción está detenida','H','','Urgente e importante.'],
+['Responder un correo de un proveedor','D','P','Discutible: sin fecha límite se planifica; si es rutinario y urgente se delega.'],
+['Organizar el almacén','E','P','Discutible: aporta poco hoy (eliminar); si afecta la operación, se planifica.'],
+['Revisar una instalación eléctrica con riesgo de cortocircuito','H','','Seguridad = urgente.'],
+['Programar el mantenimiento preventivo de la próxima semana','P','','Importante, no urgente.'],
+['Preparar el informe mensual que vence mañana','H','','Importante y con la fecha encima.'],
+['Asistir a una reunión que no requiere tu participación','E','D','Discutible: sin aporte se elimina o se delega.'],
+['Proponer mejoras para reducir el consumo energético','P','','Importante, sin urgencia.']];
+const M=[
+{n:'1 Definiciones',r:'CAP = control de la ejecución real (control de planta). Programación = planificación. Push = produzco por pronóstico; Pull = produzco por demanda real.',x:[
+D('Define el Control de la Actividad de Producción (CAP).',['Vigila/controla la ejecución real de la fabricación o servicio','Controla el orden de prioridad y la ejecución','También se llama control de planta (manufactura)','Supone que la planificación ya se hizo']),
+D('Define los sistemas Push (empujar).',['Producción anticipada a la demanda (pronóstico)','Centralizado: se cumple el programa calculado por adelantado','Los productos se empujan a las siguientes etapas o al cliente','El inventario es la forma de empuje']),
+D('Define los sistemas Pull (tirar).',['Se produce solo con demanda real o necesidad de reposición','Descentralizado','El cliente genera la demanda que jala la producción','Ejemplo: Toyota (TPS / Just-in-Time)']),
+D('Define los sistemas de control basados en tarjetas.',['Un trabajo se procesa si existen tarjetas que controlan su entrada','La tarjeta es señal visual de producir o reponer','Se produce o abastece ante una necesidad real, no por adelantado']),
+D('Define los sistemas de control basados en tiempo.',['Usan fechas, horarios y plazos establecidos','Definen qué, cuánto y cuándo producir según un programa previo','Verifican que se produzca en el tiempo previsto']),
+D('Define los sistemas de control basados en excedentes.',['Usan el inventario sobrante como referencia','Al llegar al nivel mínimo se genera señal de producir o reponer','Excedente = lo que queda tras satisfacer la demanda']),
+D('Define la programación de la producción.',['Fijación de planes y horarios de producción','Según la prioridad de la operación; determina inicio y fin','Busca el nivel más eficiente','Movimiento uniforme y rítmico de los productos entre etapas'])]},
+{n:'2 Push y Pull',r:'Push: primero produzco y después vendo. Pull: el cliente jala. Tarjetas = señal visual; Tiempo = fechas y plazos; Excedentes = nivel mínimo de inventario. Las láminas citan a "Piken y Cohen" (probablemente Pyke y Cohen): verifica la fuente.',x:[
+N(()=>{const n=R(8,24)*500,v=Math.round(n*R(65,90)/100/50)*50;return{q:`Push: la empresa pronostica y produce <b>${n}</b> camisetas; los clientes compran <b>${v}</b>. ¿Cuántas quedan en inventario?`,a:n-v,tol:0,u:'camisetas',h:['Sobrante = producido − vendido.'],e:`${n} − ${v} = ${n-v}. Ese es el riesgo del Push: producir antes de vender.`}}),
+N(()=>{const i=R(10,20)*100,m=R(3,5)*100;return{q:`Control por excedentes: inventario inicial <b>${i}</b> botellas, nivel mínimo <b>${m}</b>. ¿Cuántas se pueden consumir antes de que se genere la señal de reposición?`,a:i-m,tol:0,u:'botellas',h:['La señal salta al llegar al mínimo, no a cero.'],e:`${i} − ${m} = ${i-m}. En la lámina: 1,000 − 700 = 300 = mínimo, y ahí se repone.`}}),
+pk('Una panadería debe tener 100 panes a las 7:00 a. m. y programa preparación, horneado y enfriamiento según el tiempo de cada actividad. ¿Qué mecanismo usa?',['Basado en tiempo','Basado en tarjetas','Basado en excedentes'],'Organiza con fechas, horarios y plazos: control basado en tiempo.'),
+pk('Un contenedor vacío regresa con su tarjeta a la estación anterior como señal de reponer. ¿Qué mecanismo es?',['Basado en tarjetas (Kanban)','Basado en tiempo','Basado en excedentes'],'La tarjeta es la señal visual de producir o reponer.'),
+pk('Un fabricante produce 20,000 unidades según su pronóstico y las envía a almacén y tiendas. ¿Qué sistema es?',['Push','Pull'],'Produce anticipándose a la demanda: Push.'),
+pk('Según Pyke y Cohen (citados en la lámina), un sistema considerado Pull...',['puede tener también características Push, y viceversa','es siempre puramente Pull','funciona sin inventario','solo existe en Toyota'],'No se puede afirmar que un sistema sea puramente Push o Pull; pueden tener rasgos de ambos.')]},
+{n:'3 Productividad',r:'Productividad = (FL plan × TC plan) / (FL real × TC real). 100 % = según plan; menos de 100 % = se gastó más tiempo-hombre del planeado.',x:[
+N(()=>{const fp=R(8,14),tp=5*R(4,8),fr=fp+R(2,5);return{...PP(fp,tp,fr,tp),q:`Plan: <b>${fp}</b> operadores, ciclo <b>${tp} s</b>. Un día se usaron <b>${fr}</b> operadores con el mismo ciclo. ¿Productividad del día?`}}),
+N(()=>{const fp=R(8,14),tp=5*R(4,8),fr=fp+R(1,4),x=P([10,15,20]);return{...PP(fp,tp,fr,tp*(1+x/100)),q:`Plan: <b>${fp}</b> operadores, ciclo <b>${tp} s</b>. Real: <b>${fr}</b> operadores y el ciclo subió <b>${x} %</b> por reparar fixturas. ¿Productividad?`}}),
+N(()=>{const fp=R(10,16),tp=5*R(4,8),fr=fp-R(1,2);return{...PP(fp,tp,fr,tp),q:`Plan: <b>${fp}</b> operadores, ciclo <b>${tp} s</b>. Se usaron solo <b>${fr}</b> con el mismo ciclo. ¿Productividad? (¿es mayor o menor que 100 %?)`}}),
+N(()=>{const fp=R(8,14),tp=5*R(4,8),fr=fp+R(1,5),p=pr(fp,tp,fr,tp);return{q:`La productividad fue <b>${p.toFixed(1)} %</b> con el ciclo igual al planeado (plan: ${fp} operadores, ${tp} s). ¿Cuántos operadores se usaron?`,a:fr,tol:.5,u:'operadores',h:['Despeja: FL real = (FL plan × TC plan) / (productividad × TC real).'],e:`FL real = ${fp*tp} / (${(p/100).toFixed(3)} × ${tp}) ≈ ${fr}`}}),
+pk('Una productividad de 75 % significa que...',['se consumió ≈ 33 % más tiempo-hombre que el planeado (1/0.75)','se consumió 25 % más tiempo-hombre que el planeado','se produjo 75 % más de lo planeado','se ahorró 25 % del tiempo-hombre'],'Con 75 % necesitas 1/0.75 ≈ 1.33 veces el tiempo-hombre planeado. Error típico: restar 100 − 75.'),
+N(()=>({q:'Datos de la lámina (plan 12 operadores, 25 s). Lunes: 16 operadores, 25 s. Martes: 15 operadores y ciclo +15 %. ¿Cuántos puntos porcentuales separan la productividad del lunes de la del martes?',a:75-300/431.25*100,tol:.1,u:'puntos',h:['Lunes = 300/400 = 75 %.','Martes = 300 / (15 × 28.75).'],e:'Lunes 75 %; martes 300/431.25 = 69.57 %. Diferencia ≈ 5.43 puntos: el martes fue peor.'}))]},
+{n:'4 Programación',r:'Programar = fijar planes y horarios con inicio y fin. Afectan el programa: materiales, capacidad del personal y capacidad de las máquinas. Técnicas: barras, Gantt, camino crítico (CPM), PERT-Cost.',x:[
+pk('¿Qué técnica sirve para problemas relativamente pequeños y poco complejos, mostrando tareas, duración y secuencia en un calendario?',['Gráfica de Gantt','PERT-Cost','Control por excedentes','Matriz de Eisenhower'],'Gantt: tareas, duración, secuencia y calendario del proyecto.'),
+pk('Método matemático de teoría de redes que da la secuencia y el uso óptimo de los recursos:',['Camino crítico (CPM)','Gráfica de barras','Kanban','Gráfica de Gantt'],'El camino crítico trabaja con redes y secuencias.'),
+pk('Variante del camino crítico que, además de minimizar tiempo, busca máxima calidad y costo mínimo:',['PERT-Cost','Gráfica de barras','CAP','Control por tiempo'],'PERT-Cost agrega costo y calidad al objetivo de tiempo.'),
+pk('¿Cuál NO es una finalidad de la programación?',['Acumular inventario de producto terminado','Prever pérdidas de tiempo o sobrecargas entre centros','Mantener ocupada la mano de obra disponible','Cumplir los plazos de entrega'],'Las finalidades son prever sobrecargas, ocupar la mano de obra y cumplir plazos.'),
+pk('Faltan materiales para una orden. ¿Qué factor del programa se compromete?',['Materiales: peligran las fechas comprometidas','Capacidad de la maquinaria','Capacidad del personal','Ninguno'],'Los materiales determinan si se cumplen las fechas de entrega.'),
+pk('El programa dice 30 mesas el miércoles y a mediodía van 22. ¿Qué función detecta y corrige la desviación?',['El CAP (control de ejecución)','La programación maestra (planificación)','El pronóstico de ventas','Ninguna'],'Programar fija el plan; el CAP vigila lo real y prioriza.')]},
+{n:'5 Ruta crítica',r:'ES = mayor EF de las predecesoras (sin predecesoras: 0). EF = ES + duración. Duración del proyecto = mayor EF. Ruta crítica = actividades con holgura 0.',x:[{t:'cpm',k:0},{t:'cpm',k:1},{t:'cpm',k:2},{t:'wif',k:0},{t:'wif',k:1},{t:'wif',k:2}]},
+{n:'6 Niveles',r:'N1 urgente, reparación inmediata. N2 importante, cuanto antes. N3 programar con fecha. N4 programar sin fecha. Seguridad, medio ambiente y cuellos de botella son urgentes.',x:[
+pk('Fuga de un químico que pone en riesgo al personal.',LV,'Seguridad de las personas = Nivel 1.',0,1),
+pk('La prensa que es cuello de botella se detuvo y la línea no avanza.',LV,'Equipo crítico para la producción = Nivel 1.',0,1),
+pk('Una banda vibra pero sigue funcionando; molesta a la planta pero puede esperar a que se resuelvan las urgentes.',LV,'Trastorno real, pero tras las urgentes: Nivel 2.',1,1),
+pk('Cambiar un sello gastado de una máquina secundaria durante la parada del sábado 20.',LV,'Se programa con fecha determinada: Nivel 3.',2,1),
+pk('Retocar la pintura de un tablero, sin fecha comprometida.',LV,'Se programa cuando haya disponibilidad: Nivel 4.',3,1),
+pk('El 80 % de las averías reportadas llegan como Nivel 1. ¿Cuál es la causa más probable?',['No hay criterio objetivo: cada quien decide a juicio propio','Las máquinas fallan más de noche','Mantenimiento tiene demasiado personal','El Nivel 1 es el más común por definición'],'Sin criterios claros, la prioridad queda al juicio subjetivo y casi todo se reporta como máxima.')]},
+{n:'7 Eisenhower',r:'Urgente + importante = Hacer. Urgente + no importante = Delegar. No urgente + importante = Planificar. Ni urgente ni importante = Eliminar.',x:[{t:'eis'},
+pk('Formación del personal.',EQ,'Importante pero no urgente: Planificar.',2,1),
+pk('Un informe que nadie utiliza.',EQ,'Poco valor: Eliminar.',3,1),
+pk('Una incidencia que afecta a un cliente crítico.',EQ,'Urgente e importante: Hacer.',0,1),
+pk('Una solicitud administrativa rutinaria que otra persona puede resolver hoy.',EQ,'Urgente, poco importante para ti: Delegar.',1,1),
+pk('Las láminas asocian P2 con "Delegar" y definen el Nivel 2 como "importante". ¿Qué falla?',['Delegar corresponde a tareas no importantes, y el Nivel 2 sí es importante','Nada, son equivalentes','El Nivel 2 es no urgente y no importante','P2 debería ser Eliminar'],'Las dos clasificaciones no encajan del todo. Pregunta a tu profesor cuál usar en el examen.')]}];
+const T=M.reduce((a,m)=>a+m.x.length,0);
+function hud(){const p=S.x/(T*10);$('#bi').style.width=p*100+'%';$('#xp').textContent=`XP ${S.x} / ${T*10} · Rango: ${p>=1?'Ingeniero experto':p>=.6?'Ingeniero':p>=.3?'Técnico':'Aprendiz'}`;nav()}
+function nav(){const n=$('#nv');n.innerHTML='';M.forEach((m,i)=>{const c=m.x.filter((_,j)=>S.d[i+'_'+j]).length,k=E('button',i==cur?'tab on':'tab',`${m.n}<small>${c}/${m.x.length}</small>`);k.onclick=()=>show(i);n.append(k)})}
+function show(i){cur=i;nav();const m=$('#mn');m.innerHTML='';m.append(E('h2','',M[i].n),E('details','',`<summary>Repaso rápido (solo si te atoras)</summary><p>${M[i].r}</p>`));M[i].x.forEach((x,j)=>m.append(mk(x,i+'_'+j,j+1)));window.scrollTo(0,0)}
+function mk(x,id,n){const d=E('div','ex'),h=E('h5','',`Ejercicio ${n}${S.d[id]?' ✔':''}`),b=E('div'),fb=E('div','fb');d.append(h,b,fb);
+const say=(m,k)=>{fb.className='fb '+(k||'');fb.innerHTML=m},win=()=>{if(!S.d[id]){S.d[id]=1;S.x+=10;sv();hud()}h.textContent=`Ejercicio ${n} ✔`},
+bt=(r,t,f)=>{const k=E('button','sm',t);k.onclick=f;r.append(k)};
+if(x.t=='pick'){b.innerHTML=`<p>${x.q}</p>`;const o=x.o.map((v,i)=>[v,i]);(x.f?o:sh(o)).forEach(([v,i])=>{const k=E('button','op',v);k.onclick=()=>{if(i==x.a){k.classList.add('ok');say('✔ '+x.e,'ok');win()}else{k.classList.add('no');say('✘ No es. Piensa en el criterio y prueba otra.','no')}};b.append(k)})}
+else if(x.t=='num'){let g,hi;const go=()=>{g=x.g();hi=0;b.innerHTML=`<p>${g.q}</p><div class="r"><input type="number" step="any" placeholder="Tu resultado"><span>${g.u||''}</span></div>`;const r=b.querySelector('.r'),inp=b.querySelector('input');
+bt(r,'Comprobar',()=>{const v=parseFloat(inp.value);if(isNaN(v))return say('Escribe un número.');Math.abs(v-g.a)<=(g.tol??.5)?(say('✔ '+g.e,'ok'),win()):say('✘ No coincide. Usa una pista o revisa tu procedimiento.','no')});
+bt(r,'Pista',()=>say('💡 '+g.h[Math.min(hi++,g.h.length-1)]));bt(r,'Ver solución',()=>say('📘 '+g.e));bt(r,'Otros números',()=>{say('');go()})};go()}
+else if(x.t=='def'){b.innerHTML=`<p>${x.q}</p><textarea rows="3" placeholder="Escríbelo con tus palabras, sin copiar…"></textarea>`;const ta=b.querySelector('textarea'),r=E('div','r');b.append(r);
+bt(r,'Comparar con la lámina',()=>{if(ta.value.trim().length<25)return say('Escribe tu definición completa antes de comparar.','no');
+const L=E('div','ck',`<p>Marca solo las ideas que <b>sí</b> incluiste:</p>`+x.k.map(t=>`<label><input type="checkbox"> ${t}</label>`).join('')),msg=E('p'),bx=[...L.querySelectorAll('input')];L.append(msg);
+bx.forEach(c=>c.onchange=()=>{const k=bx.filter(z=>z.checked).length;if(k>=Math.ceil(x.k.length*.75)){win();msg.textContent=`✔ Buen dominio (${k}/${x.k.length}).`}else msg.textContent=`${k}/${x.k.length} ideas. Reescribe agregando las que faltan.`});fb.className='fb';fb.innerHTML='';fb.append(L)})}
+else if(x.t=='cpm'){const a=CP[x.k],c=cpm(a),cr=a.filter(v=>c.r[v[0]].h==0).map(v=>v[0]).join(''),H=['ES = el mayor EF entre las predecesoras. EF = ES + duración.','Holgura = LS − ES. Recorre la red hacia atrás: LF = el menor LS de las sucesoras; la última termina en la duración total.','Ruta crítica = actividades con holgura 0, unidas de inicio a fin.'];let hi=0;
+b.innerHTML=`<p>Red del caso ${x.k+1}. Calcúlala con lápiz y captura <b>ES</b>, <b>EF</b> y <b>holgura</b>.</p><div class="w"><table><tr><th>Actividad</th><th>Dur</th><th>Pred.</th><th>ES</th><th>EF</th><th>Holg.</th></tr>${a.map(([k,nm,dd,p])=>`<tr><td><b>${k}</b> ${nm}</td><td>${dd}</td><td>${[...p].join(',')||'–'}</td>${['es','ef','h'].map(f=>`<td><input type="number" data-k="${k}" data-f="${f}"></td>`).join('')}</tr>`).join('')}</table></div><div class="r">Duración total: <input type="number" class="T"> días · Ruta crítica: <input class="C" size="8" placeholder="ej. ABDEF"></div>`;
+const r=E('div','r'),I=()=>[...b.querySelectorAll('td input')],t=b.querySelector('.T'),p=b.querySelector('.C');b.append(r);
+bt(r,'Comprobar',()=>{let bad=0;I().forEach(i=>{const ok=i.value!==''&&+i.value==c.r[i.dataset.k][i.dataset.f];i.className=ok?'ok':'no';bad+=!ok});
+const tk=t.value!==''&&+t.value==c.T,pc=p.value.toUpperCase().replace(/[^A-Z]/g,'')==cr;t.className=tk?'ok':'no';p.className=pc?'ok':'no';bad+=!tk+!pc;
+bad?say(`✘ ${bad} campo(s) incorrecto(s), marcados en rojo. Usa una pista.`,'no'):(say(`✔ Ruta crítica ${[...cr].join('→')} = ${c.T} días. Holguras: ${a.filter(v=>c.r[v[0]].h>0).map(v=>v[0]+' '+c.r[v[0]].h).join(', ')||'ninguna'}.`,'ok'),win())});
+bt(r,'Pista',()=>say('💡 '+H[Math.min(hi++,2)]));bt(r,'Revelar',()=>{I().forEach(i=>i.value=c.r[i.dataset.k][i.dataset.f]);t.value=c.T;p.value=cr})}
+else if(x.t=='wif'){const go=()=>{const a=CP[x.k],i=R(0,a.length-1),[k,nm,dd]=a[i],nd=Math.random()<.5&&dd>1?dd-1:dd+R(1,2),c0=cpm(a),c1=cpm(a.map((v,j)=>j==i?[v[0],v[1],nd,v[3]]:v)),e=`Original: ${c0.T} d. Holgura de ${k}: ${c0.r[k].h}. Nueva duración: ${c1.T} d. Una actividad con holgura absorbe cambios hasta agotarla; la crítica mueve el proyecto día por día.`;
+b.innerHTML=`<p>Caso ${x.k+1}: la actividad <b>${k} (${nm})</b> pasa de <b>${dd}</b> a <b>${nd}</b> días. ¿Nueva duración del proyecto?</p><div class="r"><input type="number"> días</div>`;const r=b.querySelector('.r'),inp=b.querySelector('input');
+bt(r,'Comprobar',()=>{inp.value!==''&&+inp.value==c1.T?(say('✔ '+e,'ok'),win()):say('✘ No coincide. ¿La actividad es crítica? ¿Cuánta holgura tiene?','no')});
+bt(r,'Ver solución',()=>say('📘 '+e));bt(r,'Otro cambio',()=>{say('');go()})};go()}
+else if(x.t=='eis'){b.innerHTML=`<p>Clasifica las tareas de un responsable de mantenimiento. Algunas son discutibles: lo importante es que puedas justificar tu criterio.</p><div class="w"><table>${EI.map((t,i)=>`<tr><td>${t[0]}<small></small></td><td><select><option value="">—</option><option value="H">Hacer</option><option value="D">Delegar</option><option value="P">Planificar</option><option value="E">Eliminar</option></select></td></tr>`).join('')}</table></div>`;const r=E('div','r');b.append(r);
+bt(r,'Comprobar',()=>{let bad=0;b.querySelectorAll('select').forEach((s,i)=>{const t=EI[i],ok=s.value&&(s.value==t[1]||s.value==t[2]);s.className=ok?'ok':'no';bad+=!ok;s.closest('tr').querySelector('small').textContent=s.value?t[3]:''});bad?say(`✘ ${bad} sin acertar o sin responder.`,'no'):(say('✔ Todas correctas. En las discutibles, tu justificación pesa más que la letra.','ok'),win())})}
+return d}
+hud();show(0);
+</script></body></html>
